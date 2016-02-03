@@ -1,0 +1,56 @@
+---
+- name: Install Rbenv
+  git:
+    repo: https://github.com/rbenv/rbenv.git
+    dest: "{{ rbenv_root }}"
+    version: "{{ rbenv_version }}"
+  become: yes
+
+- name: Install Dependencies for Ruby Build
+  apt: package={{ item }} state=present
+  with_items:
+    - libreadline-dev
+    - libssl-dev
+    - zlib1g-dev
+  become: yes
+
+- name: Give Console User Ownership of Rbenv
+  file:
+    path: "{{ rbenv_root }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    mode: 0755
+  become: yes
+
+- name: Install Rbenv Plugins
+  git:
+    repo: https://github.com/rbenv/{{ item.name }}.git
+    dest: "{{ rbenv_root }}/plugins/{{ item.name }}/"
+    version: "{{ item.version }}"
+  with_items:
+    - { name: ruby-build,         version: "{{ ruby_build_version }}" }
+    - { name: rbenv-vars,         version: "{{ rbenv_vars_version }}" }
+    - { name: rbenv-default-gems, version: "{{ default_gems_version }}" }
+
+- name: Install Binstubs
+  git:
+    repo: https://github.com/ianheggie/rbenv-binstubs.git
+    dest: "{{ rbenv_root }}/plugins/rbenv-binstubs/"
+    version: "{{ binstubs_version }}"
+
+- name: Set Default Gems
+  copy: src=default-gems dest={{ rbenv_root }}/default-gems
+
+- name: Add Rbenv to Profile
+  template: src=rbenv.sh.j2 dest=/etc/profile.d/rbenv.sh mode=755
+  become: yes
+
+- name: Install
+  shell: . /etc/profile.d/rbenv.sh && rbenv install {{ ruby_version }}
+  args:
+    creates: "{{ rbenv_root }}/versions/{{ ruby_version }}"
+
+- name: Copy config.ru Stub
+  template: src=config.ru.j2 dest={{ http_root }}/{{ domain }}/config.ru
+  when: copy_configru
+  notify: Restart Passenger App

@@ -1,0 +1,3 @@
+run lambda { |env|
+  [200, {"Content-Type" => "text/plain"}, "Phusion Passenger is serving Ruby {{ ruby_version }} code on {{ domain }}\n."]
+}
