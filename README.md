@@ -1,32 +1,45 @@
-Role Name
-=========
+Ansible Ruby Site Role
+======================
 
-A brief description of the role goes here.
+[![Build Status](https://travis-ci.org/bbatsche/Ansible-Ruby-Site-Role.svg?branch=master)](https://travis-ci.org/bbatsche/Ansible-Ruby-Site-Role)
+
+This role will install Rbenv and use that to install a given version of Ruby. It will create an Nginx site that runs ruby through Phusion Passenger.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Installing Rbenv requires Git to be installed on the server. But of course, you already did that, right?
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- `domain` &mdash; Site domain to be created.
+- `ruby_version` - Version of Ruby to install. Default is "2.3.0"
+- `rbenv_version` - Version of Rbenv to install. Default is "v1.0.0"
+- `ruby_build_version` - Version of ruby-build plugin to install. Default is "v20160130"
+- `default_gems_version` - Version of default-gems plugin to install. Default is a Git SHA: "4f68eae"
+- `rbenv_vars_version` - Version of rbenv-vars plugin to install Default is "v1.2.0"
+- `binstubs_version` - Version of binstubs plugin to install. Default is "v1.4"
+- `copy_configru` - Whether to copy a stub config.ru file to the site, useful for testing. Default is no
+- `http_root` &mdash; Directory all site directories will be created under. Default is "/srv/http".
+- `rbenv_root` &mdash; Directory to install Rbenv and its support files. Default is "/usr/local/rbenv"
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role depends on bbatsche.Nginx. You must install that role first using:
+
+```bash
+ansible-galaxy install bbatsche.Nginx
+```
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
 ```yml
 - hosts: servers
   roles:
-     - { role: bbatsche.rolename, x: 42 }
+     - { role: bbatsche.Ruby, domain: my-node-site.dev }
 ```
 
 License
@@ -61,8 +74,3 @@ There are several rake tasks for interacting with the test environment, includin
 - `rake vagrant[cmd]` &mdash; Run some arbitrary Vagrant command in the test environment. For example, to log in to the test environment run: `rake vagrant[ssh]`
 
 These specs are **not** meant to test for idempotence. They are meant to check that the specified tasks perform their expected steps. Idempotency can be tested independently as a form of integration testing.
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
