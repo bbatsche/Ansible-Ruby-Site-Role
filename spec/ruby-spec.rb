@@ -11,23 +11,23 @@ describe "Nginx config should be valid" do
   include_examples "nginx::config"
 end
 
-describe command(". /etc/profile.d/rbenv.sh && ruby -e \"puts 'ruby installed'\"") do
+describe command("ruby -e \"puts 'ruby installed'\"") do
   its(:stdout) { should eq "ruby installed\n" }
 
   its(:exit_status) { should eq 0 }
 end
 
-describe command(". /etc/profile.d/rbenv.sh && ruby --version") do
+describe command("ruby --version") do
   its(:stdout) { should match /^ruby 2\.3\.0/ }
 
   its(:exit_status) { should eq 0 }
 end
 
-describe command(". /etc/profile.d/rbenv.sh && env") do
+describe command("env") do
   its(:stdout) { should match /^RAILS_ENV=development$/ }
 end
 
-describe command(". /etc/profile.d/rbenv.sh && gem list") do
+describe command("gem list") do
   its(:stdout) { should match /^bundler/ }
   its(:stdout) { should match /^rack/ }
   its(:stdout) { should match /^rake/ }

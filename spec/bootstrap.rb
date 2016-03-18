@@ -14,6 +14,8 @@ set :disable_sudo, true
 # Set environment variables
 set :env, :RBENV_VERSION => "2.3.0"
 
+set :login_shell, true
+
 # Set PATH
 set :path, '/sbin:/usr/local/sbin:/usr/local/bin:$PATH'
 
