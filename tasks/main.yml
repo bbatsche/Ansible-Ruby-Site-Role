@@ -1,26 +1,24 @@
 ---
-- name: Install Rbenv
-  git:
-    repo: https://github.com/rbenv/rbenv.git
-    dest: "{{ rbenv_root }}"
-    version: "{{ rbenv_version }}"
-  become: yes
-
-- name: Install Dependencies for Ruby Build
-  apt: package={{ item }} state=present
+- name: Install Build Dependencies
+  apt: name={{ item }} state=present
   with_items:
     - libreadline-dev
     - libssl-dev
     - zlib1g-dev
   become: yes
 
-- name: Give Console User Ownership of Rbenv
+- name: Create Rbenv Directory
   file:
     path: "{{ rbenv_root }}"
     state: directory
     owner: "{{ ansible_ssh_user }}"
-    mode: 0755
   become: yes
+
+- name: Install Rbenv
+  git:
+    repo: https://github.com/rbenv/rbenv.git
+    dest: "{{ rbenv_root }}"
+    version: "{{ rbenv_version }}"
 
 - name: Install Rbenv Plugins
   git:
