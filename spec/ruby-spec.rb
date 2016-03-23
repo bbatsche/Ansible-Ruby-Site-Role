@@ -34,8 +34,8 @@ describe command("gem list") do
   its(:stdout) { should match /^sass/ }
 end
 
-describe command('printf "GET / HTTP/1.1\nHost: ruby-test.dev\n\n" | nc 127.0.0.1 80') do
-  its(:stdout) { should match /^+HTTP\/1\.1 200 OK$/ }
+describe command('curl -i ruby-test.dev') do
+  its(:stdout) { should match /^HTTP\/1\.1 200 OK$/ }
 
   its(:stdout) { should match /Phusion Passenger is serving Ruby 2\.3\.0 code on ruby-test\.dev/ }
 end
