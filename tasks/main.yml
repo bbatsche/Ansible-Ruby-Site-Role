@@ -11,7 +11,37 @@
   file:
     path: "{{ rbenv_root }}"
     state: directory
-    owner: "{{ ansible_ssh_user }}"
+    owner: root
+    group: web-admin
+    mode: 02775
+  become: yes
+
+- name: Allow Web Admins to Write Rbenv Root
+  acl:
+    name: "{{ rbenv_root }}"
+    etype: group
+    entity: web-admin
+    permissions: rwx
+    state: present
+  become: yes
+
+- name: Allow Web Admins Write to Future Directories
+  acl:
+    name: "{{ rbenv_root }}"
+    etype: group
+    entity: web-admin
+    permissions: rwx
+    default: yes
+    state: present
+  become: yes
+
+- name: Set ACL Mask for Future Directories
+  acl:
+    name: "{{ rbenv_root }}"
+    etype: mask
+    permissions: rwx
+    default: yes
+    state: present
   become: yes
 
 - name: Install Rbenv
