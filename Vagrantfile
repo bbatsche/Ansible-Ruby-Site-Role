@@ -4,8 +4,9 @@
 Vagrant.configure('2') do |config|
   config.vm.box = 'ubuntu/trusty64'
 
-  config.vm.provision "shell", inline: "sed -i 's/^AcceptEnv.*$/AcceptEnv */g' /etc/ssh/sshd_config"
-  config.vm.provision "shell", inline: "service ssh restart"
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "vagrant-playbook.yml"
+  end
 
   if Vagrant.has_plugin? 'vagrant-cachier'
     config.cache.scope = :box
