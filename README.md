@@ -16,9 +16,9 @@ Role Variables
 --------------
 
 - `domain` &mdash; Site domain to be created.
-- `ruby_version` - Version of Ruby to install. Default is "2.3.0"
+- `ruby_version` - Version of Ruby to install. Default is "2.3.1"
 - `rbenv_version` - Version of Rbenv to install. Default is "v1.0.0"
-- `ruby_build_version` - Version of ruby-build plugin to install. Default is "v20160130"
+- `ruby_build_version` - Version of ruby-build plugin to install. Default is "v20160426"
 - `default_gems_version` - Version of default-gems plugin to install. Default is a Git SHA: "4f68eae"
 - `rbenv_vars_version` - Version of rbenv-vars plugin to install Default is "v1.2.0"
 - `binstubs_version` - Version of binstubs plugin to install. Default is "v1.4"
