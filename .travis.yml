@@ -43,7 +43,7 @@ script:
   - ansible-playbook -i inventory travis-playbook.yml --syntax-check
 
   # Play test
-  - travis_wait ./play.sh
+  - travis_wait 30 ./play.sh
 
   # Idempotence test
   - ./play.sh > idempotence.out
