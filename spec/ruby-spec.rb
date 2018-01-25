@@ -9,35 +9,82 @@ RSpec.configure do |config|
   end
 end
 
-describe "Nginx config should be valid" do
+describe "Nginx" do
   include_examples "nginx"
 end
 
-describe command("ruby -e \"puts 'ruby installed'\"") do
-  its(:stdout) { should eq "ruby installed\n" }
+describe "Rbenv" do
+  let(:subject) { command "rbenv --version" }
 
-  its(:exit_status) { should eq 0 }
+  it "is installed" do
+    expect(subject.stdout).to match /^rbenv \d+\.\d+\.\d+/
+  end
+
+  # Can't use "no errors"; docker thinks this should be interactive/login shell
+  it "has no errors" do
+    expect(subject.exit_status).to eq 0
+  end
 end
 
-describe command("ruby --version") do
-  its(:stdout) { should match /^ruby 2\.4\.3/ }
+context "CLI" do
+  describe "Ruby runtime" do
+    let(:subject) { command %Q{ruby -e "puts 'ruby is installed'"} }
 
-  its(:exit_status) { should eq 0 }
+    it "executes Ruby code" do
+      expect(subject.stdout).to match /^ruby is installed$/
+    end
+
+    it "has no errors" do
+      expect(subject.exit_status).to eq 0
+    end
+  end
+
+  describe "Ruby version" do
+    let(:subject) { command "ruby --version" }
+
+    it "is the correct version" do
+      expect(subject.stdout).to match /^ruby #{Regexp.quote("2.4.3")}/
+    end
+
+    it "has no errors" do
+      expect(subject.exit_status).to eq 0
+    end
+  end
+
+  describe "Environment variables" do
+    let(:subject) { command "env" }
+
+    it "includes the Rails environment" do
+      expect(subject.stdout).to match /^RAILS_ENV=development$/
+    end
+  end
+
+  describe "Default gems" do
+    let(:subject) { command "gem list" }
+
+    it "includes bundler" do
+      expect(subject.stdout).to match /^bundler/
+    end
+    it "includes rack" do
+      expect(subject.stdout).to match /^rack/
+    end
+    it "includes rake" do
+      expect(subject.stdout).to match /^rake/
+    end
+    it "includes sass" do
+      expect(subject.stdout).to match /^sass/
+    end
+  end
 end
 
-describe command("env") do
-  its(:stdout) { should match /^RAILS_ENV=development$/ }
-end
+describe "Web service" do
+  let(:subject) { command "curl -i ruby-test.dev" }
 
-describe command("gem list") do
-  its(:stdout) { should match /^bundler/ }
-  its(:stdout) { should match /^rack/ }
-  its(:stdout) { should match /^rake/ }
-  its(:stdout) { should match /^sass/ }
-end
+  include_examples "curl request", "200"
 
-describe command('curl -i ruby-test.dev') do
-  its(:stdout) { should match /^HTTP\/1\.1 200 OK$/ }
+  include_examples "curl request html"
 
-  its(:stdout) { should match /Phusion Passenger is serving Ruby 2\.4\.3 code on ruby-test\.dev/ }
+  it "processed Ruby code" do
+    expect(subject.stdout).to match /Phusion Passenger is serving Ruby 2\.4\.3 code on ruby-test\.dev/
+  end
 end

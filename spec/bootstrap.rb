@@ -21,6 +21,7 @@ set :disable_sudo, true
 
 # Set environment variables
 set :env, :RBENV_VERSION => "2.4.3"
+set :docker_container_exec_options, { :Env => ["RBENV_VERSION=2.4.3"] }
 
 set :login_shell, true
 
