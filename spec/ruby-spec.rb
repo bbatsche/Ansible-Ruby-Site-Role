@@ -4,7 +4,7 @@ RSpec.configure do |config|
   config.before :suite do
     AnsibleHelper.playbook("playbooks/ruby-playbook.yml", ENV["TARGET_HOST"], {
       copy_configru: true,
-      ruby_version: "2.3.0"
+      ruby_version: "2.4.3"
     })
   end
 end
@@ -20,7 +20,7 @@ describe command("ruby -e \"puts 'ruby installed'\"") do
 end
 
 describe command("ruby --version") do
-  its(:stdout) { should match /^ruby 2\.3\.0/ }
+  its(:stdout) { should match /^ruby 2\.4\.3/ }
 
   its(:exit_status) { should eq 0 }
 end
@@ -39,5 +39,5 @@ end
 describe command('curl -i ruby-test.dev') do
   its(:stdout) { should match /^HTTP\/1\.1 200 OK$/ }
 
-  its(:stdout) { should match /Phusion Passenger is serving Ruby 2\.3\.0 code on ruby-test\.dev/ }
+  its(:stdout) { should match /Phusion Passenger is serving Ruby 2\.4\.3 code on ruby-test\.dev/ }
 end

@@ -20,7 +20,7 @@ end
 set :disable_sudo, true
 
 # Set environment variables
-set :env, :RBENV_VERSION => "2.3.0"
+set :env, :RBENV_VERSION => "2.4.3"
 
 set :login_shell, true
 
