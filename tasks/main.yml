@@ -78,6 +78,13 @@
   args:
     creates: "{{ rbenv_root }}/versions/{{ ruby_version }}"
 
+- name: Copy Nginx Config
+  template: src=nginx.conf.j2 dest=/etc/nginx/conf.d/ruby.conf
+  become: yes
+  notify:
+    - Restart Passenger App
+    - Restart Nginx
+
 - name: Copy config.ru Stub
   template: src=config.ru.j2 dest={{ http_root }}/{{ domain }}/config.ru
   when: copy_configru
