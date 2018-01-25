@@ -3,11 +3,12 @@ galaxy_info:
   author: Ben Batschelet
   description: Install Rbenv, Ruby, and create an Nginx site running it through Phusion Passenger
   license: MIT
-  min_ansible_version: 1.9
+  min_ansible_version: 2.1
   platforms:
   - name: Ubuntu
     versions:
     - trusty
+    - xenial
   galaxy_tags:
     - web
     - nginx
@@ -16,4 +17,4 @@ galaxy_info:
     - rbenv
     - ruby
 dependencies:
-  - { role: bbatsche.Nginx, site_type: ruby }
+  - { role: bbatsche.Nginx, passenger_app: yes }
