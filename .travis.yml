@@ -45,7 +45,7 @@ script:
   - ansible-playbook travis-playbook.yml --syntax-check
 
   # Play test
-  - rake ansible:playbook[travis-playbook.yml]
+  - travis_wait rake ansible:playbook[travis-playbook.yml]
 
   # Idempotence test
   - rake ansible:playbook[travis-playbook.yml] > idempotence.out
