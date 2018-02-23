@@ -54,7 +54,8 @@ script:
     && (echo "Idempotence test: pass" && exit 0) || (echo "Idempotence test: fail" && cat idempotence.out && exit 1)
 
   # Serverspec
-  - rake spec
+  - travis_wait rake spec:trusty
+  - travis_wait rake spec:xenial
 
 after_script:
   - rake environment:destroy
