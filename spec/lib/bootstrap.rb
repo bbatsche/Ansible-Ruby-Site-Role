@@ -26,3 +26,4 @@ set :disable_sudo, true
 set :path, "/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:$PATH"
 
 set :shell, "/bin/bash"
+set :login_shell, true
