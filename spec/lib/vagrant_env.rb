@@ -1,6 +1,7 @@
 require 'net/ssh'
 require 'shellwords'
 require 'tempfile'
+require_relative "exec_error"
 
 class VagrantEnv
   attr_reader :name
@@ -48,9 +49,7 @@ class VagrantEnv
 
     output = []
     IO.popen(command, {:err => [:child, :out]}) do |io|
-      io.each do |line|
-        output << line.strip
-      end
+      output = io.readlines.collect(&:strip)
     end
 
     if !$?.success?

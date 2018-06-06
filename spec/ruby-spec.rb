@@ -1,11 +1,20 @@
-require_relative "bootstrap"
+require_relative "lib/bootstrap"
 
 RSpec.configure do |config|
   config.before :suite do
+    @ruby_version = "2.4.3"
+
     AnsibleHelper.playbook("playbooks/ruby-playbook.yml", ENV["TARGET_HOST"], {
       copy_configru: true,
-      ruby_version: "2.4.3"
+      ruby_version: @ruby_version
     })
+
+    set :env, :RBENV_VERSION => @ruby_version
+    set :docker_container_exec_options, { :Env => ["RBENV_VERSION=#{@ruby_version}"] }
+  end
+
+  config.before :each do
+    @ruby_version = "2.4.3"
   end
 end
 
@@ -43,7 +52,7 @@ context "CLI" do
     let(:subject) { command "ruby --version" }
 
     it "is the correct version" do
-      expect(subject.stdout).to match /^ruby #{Regexp.quote("2.4.3")}/
+      expect(subject.stdout).to match /^ruby #{Regexp.quote(@ruby_version)}/
     end
 
     it "has no errors" do
@@ -85,6 +94,6 @@ describe "Web service" do
   include_examples "curl request html"
 
   it "processed Ruby code" do
-    expect(subject.stdout).to match /Phusion Passenger is serving Ruby 2\.4\.3 code on ruby-test\.dev/
+    expect(subject.stdout).to match /Phusion Passenger is serving Ruby #{Regexp.quote(@ruby_version)} code on ruby-test\.dev/
   end
 end
