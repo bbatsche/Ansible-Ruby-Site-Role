@@ -5,6 +5,7 @@
     - libreadline-dev
     - libssl-dev
     - zlib1g-dev
+    - git
   become: yes
 
 - name: Create Rbenv Directory
