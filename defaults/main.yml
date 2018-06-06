@@ -3,7 +3,7 @@ rbenv_version:        v1.1.1
 
 ruby_version:         2.5.0
 
-ruby_build_version:   v20171226
+ruby_build_version:   v20180601
 default_gems_version: de4ff2e
 rbenv_vars_version:   19caf39
 binstubs_version:     8ecb7ca
