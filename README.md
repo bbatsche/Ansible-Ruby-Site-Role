@@ -1,7 +1,11 @@
 Ansible Ruby Site Role
 ======================
 
-[![Build Status](https://travis-ci.org/bbatsche/Ansible-Ruby-Site-Role.svg?branch=master)](https://travis-ci.org/bbatsche/Ansible-Ruby-Site-Role) [![Ansible Galaxy](https://img.shields.io/ansible/role/7521.svg)](https://galaxy.ansible.com/bbatsche/Ruby)
+[![Build Status](https://travis-ci.org/bbatsche/Ansible-Ruby-Site-Role.svg)](https://travis-ci.org/bbatsche/Ansible-Ruby-Site-Role)
+[![License](https://img.shields.io/github/license/bbatsche/Ansible-Ruby-Site-Role.svg)](LICENSE)
+[![Role Name](https://img.shields.io/ansible/role/7521.svg)](https://galaxy.ansible.com/bbatsche/Ruby)
+[![Release Version](https://img.shields.io/github/tag/bbatsche/Ansible-Ruby-Site-Role.svg)](https://galaxy.ansible.com/bbatsche/Ruby)
+[![Downloads](https://img.shields.io/ansible/role/d/7521.svg)](https://galaxy.ansible.com/bbatsche/Ruby)
 
 This role will install Rbenv and use that to install a given version of Ruby. It will create an Nginx site that runs ruby through Phusion Passenger.
 
