@@ -1,11 +1,12 @@
 ---
 - name: Install Build Dependencies
-  apt: name={{ item }} state=present
-  with_items:
-    - libreadline-dev
-    - libssl-dev
-    - zlib1g-dev
-    - git
+  apt:
+    name:
+      - libreadline-dev
+      - libssl-dev
+      - zlib1g-dev
+      - git
+    state: present
   become: yes
 
 - name: Create Rbenv Directory
@@ -56,7 +57,7 @@
     repo: https://github.com/rbenv/{{ item.name }}.git
     dest: "{{ rbenv_root }}/plugins/{{ item.name }}/"
     version: "{{ item.version }}"
-  with_items:
+  loop:
     - { name: ruby-build,         version: "{{ ruby_build_version }}" }
     - { name: rbenv-vars,         version: "{{ rbenv_vars_version }}" }
     - { name: rbenv-default-gems, version: "{{ default_gems_version }}" }

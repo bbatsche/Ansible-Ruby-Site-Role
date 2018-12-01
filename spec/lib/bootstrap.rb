@@ -25,5 +25,14 @@ set :disable_sudo, true
 # Set PATH
 set :path, "/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:$PATH"
 
-set :shell, "/bin/bash"
 set :login_shell, true
+
+set :shell, "/bin/bash"
+
+RSpec.configure do |config|
+  config.around :each, sudo: true do |example|
+    set :disable_sudo, false
+    example.run
+    set :disable_sudo, true
+  end
+end
